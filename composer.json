@@ -1,0 +1,12 @@
+{
+  "name": "lucatume/user-role-content-restriction",
+  "description": "An extension of the tad-restricted-content plugin.",
+  "minimum-stability": "dev",
+  "license": "GPL-2.0",
+  "authors": [
+    {
+      "name": "Luca Tumedei",
+      "email": "luca@theaveragedev.com"
+    }
+  ]
+}
