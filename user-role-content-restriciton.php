@@ -15,13 +15,18 @@ function urcr_autoload( $class ) {
 		require 'src/' . str_replace( 'urcr_', '', $class ) . '.php';
 	}
 }
+
 spl_autoload_register( 'urcr_autoload' );
 
 
 function urcr_load() {
+	if ( ! class_exists( 'trc_Core_Plugin' ) ) {
+		return;
+	}
 	urcr_Plugin::instance()
 	           ->hooks();
 }
+
 add_action( 'plugins_loaded', 'urcr_load' );
 
 register_activation_hook( __FILE__, array( 'urcr_Plugin', 'activate' ) );

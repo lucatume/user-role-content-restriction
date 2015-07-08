@@ -45,6 +45,9 @@ class urcr_Plugin {
 	}
 
 	public static function activate() {
+		if ( ! class_exists( 'trc_Core_Plugin' ) ) {
+			return;
+		}
 		wp_schedule_event( time(), 'hourly', 'urcr_worker' );
 		urcr_TermUpdater::instance()
 		                ->update_terms();
