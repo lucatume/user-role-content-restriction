@@ -27,8 +27,13 @@ class urcr_User implements trc_Public_UserSlugProviderInterface {
 	 * @return string[] An array of term slugs the user can access for the taxonomy.
 	 */
 	public function get_user_slugs() {
-		$user = get_user_by( 'id', get_current_user_id() );
-		return $user->roles;
+		$roles = array( 'visitor' );
+		if ( ! is_user_logged_in() ) {
+			$user  = get_user_by( 'id', get_current_user_id() );
+			$roles = array_merge( $roles, $user->roles );
+		}
+
+		return $roles;
 	}
 
 	/**

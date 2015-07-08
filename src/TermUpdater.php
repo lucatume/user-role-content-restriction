@@ -30,13 +30,16 @@ class urcr_TermUpdater {
 		$tax    = urcr_Plugin::instance()->taxonomy_name;
 		$option = urcr_Plugin::instance()->added_terms_option;
 
+		register_taxonomy( $tax, null );
+
 		$user_roles = get_option( 'wp_user_roles', array() );
 
 		if ( empty( $user_roles ) ) {
 			return;
 		}
 
-		$user_roles_slugs = array_keys( $user_roles );
+		$user_roles_slugs   = array_keys( $user_roles );
+		$user_roles_slugs[] = 'visitor';
 
 		$added_terms = get_option( $option, array() );
 
@@ -46,6 +49,10 @@ class urcr_TermUpdater {
 			return;
 		}
 
+		if ( empty( $added_terms ) ) {
+			wp_insert_term( __( 'Visitor (anyone)', 'urcr' ), $tax, array( 'slug' => 'visitor' ) );
+			$added_terms[] = 'anyone';
+		}
 
 		foreach ( $this->get_slugs_to_remove() as $role_slug ) {
 			$term = get_term_by( 'slug', $role_slug, $tax );
@@ -63,7 +70,7 @@ class urcr_TermUpdater {
 
 	protected function should_add_or_remove_terms( $added_terms, $user_roles_slugs ) {
 		$this->to_remove = array_diff( $added_terms, $user_roles_slugs );
-		$this->to_add    = array_diff( $user_roles_slugs, $added_terms );
+		$this->to_add    = array_diff( $user_roles_slugs, $added_terms, array( 'visitor' ) );
 
 		return count( $this->to_remove ) || count( $this->to_add );
 	}
