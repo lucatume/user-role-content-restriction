@@ -55,10 +55,6 @@ class urcr_Plugin {
 	}
 
 	public function hooks() {
-		if ( ! ( class_exists( 'trc_Core_Plugin' ) && class_exists( 'CMB2' ) ) ) {
-			return;
-		}
-
 		add_action( 'init', array( $this, 'localization_init' ) );
 		add_action( 'init', array( $this, 'register_taxonomy' ) );
 
