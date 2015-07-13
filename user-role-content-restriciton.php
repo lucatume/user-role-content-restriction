@@ -18,7 +18,6 @@ function urcr_autoload( $class ) {
 
 spl_autoload_register( 'urcr_autoload' );
 
-
 function urcr_load() {
 	if ( ! class_exists( 'trc_Core_Plugin' ) ) {
 		return;

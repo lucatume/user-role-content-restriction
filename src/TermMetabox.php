@@ -25,7 +25,9 @@ class urcr_TermMetabox {
 			'desc'     => __( 'Select the user roles that will be able to access the content', 'urcr' ),
 			'id'       => $prefix . 'taxonomy_terms',
 			'taxonomy' => urcr_Plugin::instance()->taxonomy_name,
-			'type'     => 'taxonomy_multicheck'
+			'type'     => 'taxonomy_multicheck',
+			'default'  => urcr_TermUpdater::instance()
+			                              ->get_default_role_slug()
 		) );
 	}
 }

@@ -35,17 +35,14 @@ class urcr_Plugin {
 
 	public static function instance() {
 		if ( empty( self::$instance ) ) {
-			self::$instance            = new self;
-			self::$instance->root_file = __FILE__;
-			self::$instance->root_dir  = __DIR__;
-			self::$instance->root_url  = plugins_url( '', __FILE__ );
+			self::$instance = new self;
 		}
 
 		return self::$instance;
 	}
 
 	public static function activate() {
-		if ( ! class_exists( 'trc_Core_Plugin' ) ) {
+		if ( ! ( class_exists( 'trc_Core_Plugin' ) && class_exists( 'CMB2' ) ) ) {
 			return;
 		}
 		wp_schedule_event( time(), 'hourly', 'urcr_worker' );
@@ -58,6 +55,10 @@ class urcr_Plugin {
 	}
 
 	public function hooks() {
+		if ( ! ( class_exists( 'trc_Core_Plugin' ) && class_exists( 'CMB2' ) ) ) {
+			return;
+		}
+
 		add_action( 'init', array( $this, 'localization_init' ) );
 		add_action( 'init', array( $this, 'register_taxonomy' ) );
 

@@ -8,5 +8,8 @@
       "name": "Luca Tumedei",
       "email": "luca@theaveragedev.com"
     }
-  ]
+  ],
+  "require-dev": {
+    "lucatume/wp-browser": "dev-master"
+  }
 }

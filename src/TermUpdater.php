@@ -18,6 +18,11 @@ class urcr_TermUpdater {
 	 */
 	protected $to_add = array();
 
+	/**
+	 * @var string The slug for the "anyone either logged in or not role"
+	 */
+	protected $default_role_slug = 'visitor';
+
 	public static function instance() {
 		if ( empty( self::$instance ) ) {
 			self::$instance = new self;
@@ -39,7 +44,7 @@ class urcr_TermUpdater {
 		}
 
 		$user_roles_slugs   = array_keys( $user_roles );
-		$user_roles_slugs[] = 'visitor';
+		$user_roles_slugs[] = $this->default_role_slug;
 
 		$added_terms = get_option( $option, array() );
 
@@ -50,7 +55,7 @@ class urcr_TermUpdater {
 		}
 
 		if ( empty( $added_terms ) ) {
-			wp_insert_term( __( 'Visitor (anyone)', 'urcr' ), $tax, array( 'slug' => 'visitor' ) );
+			wp_insert_term( __( 'Visitor (anyone)', 'urcr' ), $tax, array( 'slug' => $this->default_role_slug ) );
 			$added_terms[] = 'anyone';
 		}
 
@@ -70,7 +75,7 @@ class urcr_TermUpdater {
 
 	protected function should_add_or_remove_terms( $added_terms, $user_roles_slugs ) {
 		$this->to_remove = array_diff( $added_terms, $user_roles_slugs );
-		$this->to_add    = array_diff( $user_roles_slugs, $added_terms, array( 'visitor' ) );
+		$this->to_add    = array_diff( $user_roles_slugs, $added_terms, array( $this->default_role_slug ) );
 
 		return count( $this->to_remove ) || count( $this->to_add );
 	}
@@ -81,6 +86,10 @@ class urcr_TermUpdater {
 
 	private function get_slugs_to_add() {
 		return $this->to_add;
+	}
+
+	public function get_default_role_slug() {
+		return apply_filters( 'urcr_default_restriction_slug', $this->default_role_slug );
 	}
 
 }
